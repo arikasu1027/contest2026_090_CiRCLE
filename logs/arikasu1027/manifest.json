@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "team_id": "contest2026_090_CiRCLE",
+  "github_login": "arikasu1027",
+  "generator": "mimocode-convert@2.0.0",
+  "updated_at": "2026-07-15T13:21:05.790805+00:00",
+  "sessions": [
+    {
+      "session_id": "ses_0b456d035ffebzxOQZB1bq6bBY",
+      "tool": "opencode",
+      "started_at": "2026-07-10T10:53:26.869000+00:00",
+      "last_event_at": "2026-07-12T14:05:49.376000+00:00",
+      "event_count": 1562,
+      "file_path": "logs/arikasu1027/2026-07-10/opencode__ses_0b456d035ffebzxOQZB1bq6bBY.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "title": "nsh运行后硬件适配准备"
+    },
+    {
+      "session_id": "ses_0af6721d6ffeWZ0cm3oSaIJG4P",
+      "tool": "opencode",
+      "started_at": "2026-07-11T09:53:43.465000+00:00",
+      "last_event_at": "2026-07-11T09:53:43.503000+00:00",
+      "event_count": 3,
+      "file_path": "logs/arikasu1027/2026-07-11/opencode__ses_0af6721d6ffeWZ0cm3oSaIJG4P.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "title": "ask: 网络不太好啊"
+    },
+    {
+      "session_id": "ses_0af616e5fffeWFZAJlqw8FwnrB",
+      "tool": "opencode",
+      "started_at": "2026-07-11T09:59:57.088000+00:00",
+      "last_event_at": "2026-07-11T09:59:57.197000+00:00",
+      "event_count": 5,
+      "file_path": "logs/arikasu1027/2026-07-11/opencode__ses_0af616e5fffeWFZAJlqw8FwnrB.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "title": "ask: 记得用用skill们"
+    },
+    {
+      "session_id": "ses_0af3e3addffeX3HM2S53pOBx4H",
+      "tool": "opencode",
+      "started_at": "2026-07-11T10:38:24.034000+00:00",
+      "last_event_at": "2026-07-11T10:38:24.051000+00:00",
+      "event_count": 15,
+      "file_path": "logs/arikasu1027/2026-07-11/opencode__ses_0af3e3addffeX3HM2S53pOBx4H.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "title": "ask: ~/prj/.claude/skills,这里面有需要的skills，记得用"
+    }
+  ]
+}

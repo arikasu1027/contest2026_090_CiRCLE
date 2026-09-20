@@ -3,7 +3,7 @@
   "team_id": "contest2026_090_CiRCLE",
   "github_login": "arikasu1027",
   "generator": "mimocode-convert@2.0.0",
-  "updated_at": "2026-09-16T04:55:49.322807+00:00",
+  "updated_at": "2026-09-20T05:27:12.440693+00:00",
   "sessions": [
     {
       "session_id": "ses_0b456d035ffebzxOQZB1bq6bBY",
@@ -826,6 +826,356 @@
       "last_event_at": "2026-09-15T20:56:37.541Z",
       "event_count": 6,
       "file_path": "logs/arikasu1027/2026-09-15/mimocode__ses_-ffe5f592c8969ffelNMb1lCKn.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f5732573dffeVhRdmdo08",
+      "tool": "mimocode",
+      "started_at": "2026-09-16T06:00:51.172Z",
+      "last_event_at": "2026-09-16T06:03:34.921Z",
+      "event_count": 10,
+      "file_path": "logs/arikasu1027/2026-09-16/mimocode__ses_-ffe5f5732573dffeVhRdmdo08.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f551f8a5dffeaTlqfwyOe",
+      "tool": "mimocode",
+      "started_at": "2026-09-16T15:40:32.149Z",
+      "last_event_at": "2026-09-20T05:25:17.785Z",
+      "event_count": 526,
+      "file_path": "logs/arikasu1027/2026-09-16/mimocode__ses_-ffe5f551f8a5dffeaTlqfwyOe.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f551df7b6ffezhRKhAbFt",
+      "tool": "mimocode",
+      "started_at": "2026-09-16T15:42:15.159Z",
+      "last_event_at": "2026-09-16T15:44:36.583Z",
+      "event_count": 5,
+      "file_path": "logs/arikasu1027/2026-09-16/mimocode__ses_-ffe5f551df7b6ffezhRKhAbFt.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f5518941dffetYUdOJyu7",
+      "tool": "mimocode",
+      "started_at": "2026-09-16T15:48:08.301Z",
+      "last_event_at": "2026-09-16T15:51:15.335Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-16/mimocode__ses_-ffe5f5518941dffetYUdOJyu7.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f547c20d7ffeSq6HDNLyB",
+      "tool": "mimocode",
+      "started_at": "2026-09-16T18:39:01.453Z",
+      "last_event_at": "2026-09-16T18:44:28.548Z",
+      "event_count": 4,
+      "file_path": "logs/arikasu1027/2026-09-16/mimocode__ses_-ffe5f547c20d7ffeSq6HDNLyB.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f533b40e9ffeeSN394lD7",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T00:29:30.463Z",
+      "last_event_at": "2026-09-17T00:33:19.119Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f533b40e9ffeeSN394lD7.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f5337ac94ffeiE705lVdX",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T00:33:24.936Z",
+      "last_event_at": "2026-09-17T00:36:37.283Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f5337ac94ffeiE705lVdX.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f531faa33ffeGsmH9defi",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T00:59:38.534Z",
+      "last_event_at": "2026-09-17T01:02:12.709Z",
+      "event_count": 4,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f531faa33ffeGsmH9defi.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f51db40c7ffehKC0h9BI8",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T06:53:58.999Z",
+      "last_event_at": "2026-09-17T07:00:48.074Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f51db40c7ffehKC0h9BI8.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4fb24852ffeoJSXAdsyj",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T16:57:58.575Z",
+      "last_event_at": "2026-09-17T17:03:00.851Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f4fb24852ffeoJSXAdsyj.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4f9ef1b1ffeUVAviQF3P",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T17:19:05.964Z",
+      "last_event_at": "2026-09-17T17:23:35.171Z",
+      "event_count": 5,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f4f9ef1b1ffeUVAviQF3P.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4f9abb0cffeOw0kntXTS",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T17:23:41.962Z",
+      "last_event_at": "2026-09-17T17:33:17.338Z",
+      "event_count": 5,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f4f9abb0cffeOw0kntXTS.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4f7b4435ffeXkRVBTXLw",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T17:58:04.132Z",
+      "last_event_at": "2026-09-17T18:01:04.777Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f4f7b4435ffeXkRVBTXLw.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4f7873a3ffedT8V4arQD",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T18:01:08.463Z",
+      "last_event_at": "2026-09-17T18:04:47.018Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f4f7873a3ffedT8V4arQD.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4f6f4fc4ffeVxx0YMyXl",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T18:11:07.470Z",
+      "last_event_at": "2026-09-17T18:14:08.840Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f4f6f4fc4ffeVxx0YMyXl.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4f18741dffelUk88X525",
+      "tool": "mimocode",
+      "started_at": "2026-09-17T19:45:59.812Z",
+      "last_event_at": "2026-09-17T19:49:10.045Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-17/mimocode__ses_-ffe5f4f18741dffelUk88X525.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4d552bc1ffeNcn4ea0Xi",
+      "tool": "mimocode",
+      "started_at": "2026-09-18T03:58:55.391Z",
+      "last_event_at": "2026-09-18T04:05:25.977Z",
+      "event_count": 4,
+      "file_path": "logs/arikasu1027/2026-09-18/mimocode__ses_-ffe5f4d552bc1ffeNcn4ea0Xi.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4cb62fafffeCahjh4dHi",
+      "tool": "mimocode",
+      "started_at": "2026-09-18T06:52:35.636Z",
+      "last_event_at": "2026-09-18T07:00:39.985Z",
+      "event_count": 5,
+      "file_path": "logs/arikasu1027/2026-09-18/mimocode__ses_-ffe5f4cb62fafffeCahjh4dHi.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4c7c47ecffePx1KjC289",
+      "tool": "mimocode",
+      "started_at": "2026-09-18T07:55:50.465Z",
+      "last_event_at": "2026-09-18T08:08:30.759Z",
+      "event_count": 7,
+      "file_path": "logs/arikasu1027/2026-09-18/mimocode__ses_-ffe5f4c7c47ecffePx1KjC289.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4c70959affeWMvs4wdHN",
+      "tool": "mimocode",
+      "started_at": "2026-09-18T08:08:35.705Z",
+      "last_event_at": "2026-09-18T08:20:31.236Z",
+      "event_count": 8,
+      "file_path": "logs/arikasu1027/2026-09-18/mimocode__ses_-ffe5f4c70959affeWMvs4wdHN.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4c41a7cdffetEkGYo9e2",
+      "tool": "mimocode",
+      "started_at": "2026-09-18T08:59:51.498Z",
+      "last_event_at": "2026-09-18T09:09:26.457Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-18/mimocode__ses_-ffe5f4c41a7cdffetEkGYo9e2.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4ba0ab4effeqPh4b4wGu",
+      "tool": "mimocode",
+      "started_at": "2026-09-18T11:55:41.665Z",
+      "last_event_at": "2026-09-18T12:00:56.215Z",
+      "event_count": 5,
+      "file_path": "logs/arikasu1027/2026-09-18/mimocode__ses_-ffe5f4ba0ab4effeqPh4b4wGu.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f490e8432ffemgFFQ8Yp1",
+      "tool": "mimocode",
+      "started_at": "2026-09-18T23:54:34.367Z",
+      "last_event_at": "2026-09-19T00:04:22.932Z",
+      "event_count": 7,
+      "file_path": "logs/arikasu1027/2026-09-18/mimocode__ses_-ffe5f490e8432ffemgFFQ8Yp1.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f48d2c37cffeCZ9wDh33f",
+      "tool": "mimocode",
+      "started_at": "2026-09-19T00:59:50.313Z",
+      "last_event_at": "2026-09-19T01:08:06.322Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-19/mimocode__ses_-ffe5f48d2c37cffeCZ9wDh33f.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f48721f83ffeORPVZoUyj",
+      "tool": "mimocode",
+      "started_at": "2026-09-19T02:45:23.769Z",
+      "last_event_at": "2026-09-19T02:50:26.826Z",
+      "event_count": 5,
+      "file_path": "logs/arikasu1027/2026-09-19/mimocode__ses_-ffe5f48721f83ffeORPVZoUyj.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f472f7573ffe1sYHZAalw",
+      "tool": "mimocode",
+      "started_at": "2026-09-19T08:37:49.968Z",
+      "last_event_at": "2026-09-19T08:55:23.942Z",
+      "event_count": 7,
+      "file_path": "logs/arikasu1027/2026-09-19/mimocode__ses_-ffe5f472f7573ffe1sYHZAalw.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f46e85b01ffebLopYp6la",
+      "tool": "mimocode",
+      "started_at": "2026-09-19T09:55:30.089Z",
+      "last_event_at": "2026-09-19T10:06:38.335Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-19/mimocode__ses_-ffe5f46e85b01ffebLopYp6la.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4633ba1affeBVSSVZdN6",
+      "tool": "mimocode",
+      "started_at": "2026-09-19T13:12:47.393Z",
+      "last_event_at": "2026-09-19T13:29:18.056Z",
+      "event_count": 6,
+      "file_path": "logs/arikasu1027/2026-09-19/mimocode__ses_-ffe5f4633ba1affeBVSSVZdN6.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f437832daffeR5BIdsexB",
+      "tool": "mimocode",
+      "started_at": "2026-09-20T01:56:51.691Z",
+      "last_event_at": "2026-09-20T01:56:51.792Z",
+      "event_count": 2,
+      "file_path": "logs/arikasu1027/2026-09-20/mimocode__ses_-ffe5f437832daffeR5BIdsexB.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f43726ce0ffeoY26u7nXq",
+      "tool": "mimocode",
+      "started_at": "2026-09-20T02:03:10.075Z",
+      "last_event_at": "2026-09-20T02:09:16.615Z",
+      "event_count": 7,
+      "file_path": "logs/arikasu1027/2026-09-20/mimocode__ses_-ffe5f43726ce0ffeoY26u7nXq.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4369c570ffeX7hXbibqs",
+      "tool": "mimocode",
+      "started_at": "2026-09-20T02:12:37.150Z",
+      "last_event_at": "2026-09-20T02:19:15.443Z",
+      "event_count": 10,
+      "file_path": "logs/arikasu1027/2026-09-20/mimocode__ses_-ffe5f4369c570ffeX7hXbibqs.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f435d72fdffeFm1ntdIdZ",
+      "tool": "mimocode",
+      "started_at": "2026-09-20T02:26:04.687Z",
+      "last_event_at": "2026-09-20T02:26:04.687Z",
+      "event_count": 1,
+      "file_path": "logs/arikasu1027/2026-09-20/mimocode__ses_-ffe5f435d72fdffeFm1ntdIdZ.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f4341f9c3ffe7KLLCQYnn",
+      "tool": "mimocode",
+      "started_at": "2026-09-20T02:56:05.495Z",
+      "last_event_at": "2026-09-20T03:00:50.533Z",
+      "event_count": 4,
+      "file_path": "logs/arikasu1027/2026-09-20/mimocode__ses_-ffe5f4341f9c3ffe7KLLCQYnn.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f433d6eddffe68br2nq4r",
+      "tool": "mimocode",
+      "started_at": "2026-09-20T03:01:02.895Z",
+      "last_event_at": "2026-09-20T03:12:59.135Z",
+      "event_count": 12,
+      "file_path": "logs/arikasu1027/2026-09-20/mimocode__ses_-ffe5f433d6eddffe68br2nq4r.jsonl",
+      "collection_mode": "backfill-sqlite",
+      "health": "ok"
+    },
+    {
+      "session_id": "ses_-ffe5f42f15515ffe1edq86IVF",
+      "tool": "mimocode",
+      "started_at": "2026-09-20T04:24:10.244Z",
+      "last_event_at": "2026-09-20T04:28:05.798Z",
+      "event_count": 5,
+      "file_path": "logs/arikasu1027/2026-09-20/mimocode__ses_-ffe5f42f15515ffe1edq86IVF.jsonl",
       "collection_mode": "backfill-sqlite",
       "health": "ok"
     }

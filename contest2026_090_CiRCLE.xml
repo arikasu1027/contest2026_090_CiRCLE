@@ -11,6 +11,8 @@
   <project path="contest2026_090_CiRCLE" name="contest2026_090_CiRCLE">
     <linkfile src="app/hello_app" dest="packages/demos/contest2026_090_hello_app"/>
     <linkfile src="quickapp/hello_quickapp" dest="packages/apps/contest2026_090_hello_quickapp"/>
+    <linkfile src="quickapp/bambockd" dest="packages/apps/contest2026_090_bambockd"/>
+    <linkfile src="app/audio_player" dest="packages/demos/contest2026_090_audio_player"/>
     <linkfile src="board/contest_board" dest="vendor/openvela/boards/contest2026_090_board"/>
   </project>
 </manifest>

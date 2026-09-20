@@ -1,0 +1,12 @@
+{
+  "name": "bambockd",
+  "version": "1.0.0",
+  "description": "竹知了 - 摇一摇就叫的蝉",
+  "scripts": {
+    "build": "aiot build --enable-custom-component",
+    "release": "aiot release --enable-custom-component"
+  },
+  "devDependencies": {
+    "aiot-toolkit": "^2.0.5"
+  }
+}

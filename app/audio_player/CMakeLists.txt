@@ -1,0 +1,11 @@
+if(CONFIG_LVX_USE_DEMO_CONTEST2026_090_AUDIO_PLAYER)
+  nuttx_add_application(
+    NAME
+    audio_player
+    STACKSIZE
+    ${CONFIG_DEFAULT_TASK_STACKSIZE}
+    MODULE
+    ${CONFIG_LVX_USE_DEMO_CONTEST2026_090_AUDIO_PLAYER}
+    SRCS
+    src/audio_player.c)
+endif()

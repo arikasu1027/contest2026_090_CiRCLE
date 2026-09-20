@@ -1,0 +1,6 @@
+config LVX_USE_DEMO_CONTEST2026_090_AUDIO_PLAYER
+	bool "Contest 2026 team 090 audio player"
+	default n
+	---help---
+		Lightweight WAV player daemon for SF32LB52 Huangshan Pi.
+		Monitors /data/play_trigger and plays through AUDCODEC DAC.

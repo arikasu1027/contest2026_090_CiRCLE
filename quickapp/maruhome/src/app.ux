@@ -1,0 +1,10 @@
+<script>
+export default {
+  onCreate() {
+    console.log('[MaruHome] app created')
+  },
+  onDestroy() {
+    console.log('[MaruHome] app destroyed')
+  }
+}
+</script>

@@ -1,0 +1,168 @@
+<template>
+  <div class="page"
+    ontouchstart="onTouchStart"
+    ontouchmove="onTouchMove"
+    ontouchend="onTouchEnd">
+
+    <div class="swipe-indicator" style="opacity: {{swipeProgress}};">
+      <text class="swipe-arrow">&#x2039;</text>
+    </div>
+
+    <div class="header">
+      <text class="header-title">设置</text>
+    </div>
+
+    <div class="section">
+      <text class="section-title">时间</text>
+      <picker class="picker" type="time" selected="{{timeVal}}" onchange="onTimeChange"></picker>
+      <text class="info">{{timeVal}}</text>
+    </div>
+
+    <div class="section">
+      <text class="section-title">日期</text>
+      <picker class="picker" type="text" range="{{months}}" selected="{{monthIdx}}" onchange="onMonthChange"></picker>
+      <picker class="picker" type="text" range="{{days}}" selected="{{dayIdx}}" onchange="onDayChange"></picker>
+      <text class="info">{{year}}-{{paddedMonth}}-{{paddedDay}}</text>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  private: {
+    year: 2026,
+    month: 9,
+    day: 19,
+    timeVal: '12:00',
+    months: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+    days: [],
+    monthIdx: 8,
+    dayIdx: 18,
+    paddedMonth: '09',
+    paddedDay: '19',
+    touchStartX: 0,
+    swipeProgress: 0
+  },
+
+  onInit() {
+    var now = new Date()
+    this.year = now.getFullYear()
+    this.month = now.getMonth() + 1
+    this.day = now.getDate()
+    this.timeVal = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0')
+    this.monthIdx = this.month - 1
+    this.dayIdx = this.day - 1
+    this.updateDays()
+    this.updatePadded()
+  },
+
+  updateDays() {
+    var maxDay = new Date(this.year, this.month, 0).getDate()
+    this.days = []
+    for (var i = 1; i <= maxDay; i++) {
+      this.days.push(i + '日')
+    }
+    if (this.dayIdx >= this.days.length) this.dayIdx = this.days.length - 1
+  },
+
+  updatePadded() {
+    this.paddedMonth = String(this.month).padStart(2, '0')
+    this.paddedDay = String(this.day).padStart(2, '0')
+  },
+
+  onTimeChange(e) {
+    this.timeVal = e.hour + ':' + (e.minute < 10 ? '0' + e.minute : e.minute)
+    console.log('[Settings] time: ' + this.timeVal)
+  },
+
+  onMonthChange(e) {
+    this.monthIdx = e.newSelected
+    this.month = this.monthIdx + 1
+    this.updateDays()
+    this.updatePadded()
+  },
+
+  onDayChange(e) {
+    this.dayIdx = e.newSelected
+    this.day = this.dayIdx + 1
+    this.updatePadded()
+  },
+
+  onTouchStart(e) {
+    this.touchStartX = e.touches[0].clientX
+    this.swipeProgress = 0
+  },
+
+  onTouchMove(e) {
+    var diff = e.touches[0].clientX - this.touchStartX
+    if (diff > 0 && this.touchStartX < 30) {
+      this.swipeProgress = Math.min(diff / 80, 1)
+    }
+  },
+
+  onTouchEnd(e) {
+    var diff = e.changedTouches[0].clientX - this.touchStartX
+    if (diff > 80 && this.touchStartX < 30) {
+      router.back()
+    } else {
+      this.swipeProgress = 0
+    }
+  }
+}
+</script>
+
+<style>
+.page {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  flex-direction: column;
+  padding: 16px;
+}
+.swipe-indicator {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  width: 30px;
+  height: 60px;
+  background-color: rgba(255,255,255,0.15);
+  border-radius: 0 12px 12px 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+.swipe-arrow {
+  font-size: 28px;
+  color: #ffffff;
+}
+.header {
+  margin-bottom: 20px;
+}
+.header-title {
+  font-size: 24px;
+  color: #ffffff;
+}
+.section {
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: 16px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+}
+.picker {
+  font-size: 20px;
+  color: #ffffff;
+  selected-font-size: 24px;
+  selected-color: #007AFF;
+  selected-background-color: rgba(255,255,255,0.1);
+  margin-bottom: 4px;
+}
+.info {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 2px;
+}
+</style>

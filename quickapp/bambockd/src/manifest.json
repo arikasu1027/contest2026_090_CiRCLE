@@ -1,0 +1,32 @@
+{
+  "package": "com.bambockd.cicada",
+  "name": "竹知了",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "minPlatformVersion": 1000,
+  "icon": "/Common/logo.png",
+  "deviceTypeList": [
+    "watch"
+  ],
+  "features": [
+    {
+      "name": "system.sensor"
+    },
+    {
+      "name": "system.audio"
+    }
+  ],
+  "config": {
+    "logLevel": "log",
+    "designWidth": 390
+  },
+  "router": {
+    "entry": "pages/index",
+    "pages": {
+      "pages/index": {
+        "component": "index"
+      }
+    }
+  },
+  "minAPILevel": 1
+}

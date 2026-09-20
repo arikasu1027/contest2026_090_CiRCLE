@@ -1,0 +1,84 @@
+<template>
+  <div class="page">
+    <div class="grid">
+      <div class="app-item" onclick="goSettings">
+        <div class="icon-wrap" style="background-color: #333333;">
+          <text class="icon-text">&#x2699;</text>
+        </div>
+        <text class="app-name">设置</text>
+      </div>
+      <div class="app-item" onclick="goMusic">
+        <div class="icon-wrap" style="background-color: #5c2a1a;">
+          <text class="icon-text">&#x1F3B5;</text>
+        </div>
+        <text class="app-name">音乐</text>
+      </div>
+      <div class="app-item" onclick="goSensor">
+        <div class="icon-wrap" style="background-color: #1a472a;">
+          <text class="icon-text">&#x1F997;</text>
+        </div>
+        <text class="app-name">竹知了</text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  goSettings() {
+    try { router.push({ uri: 'pages/settings' }) }
+    catch (e) { console.log('[MaruHome] ' + e) }
+  },
+  goMusic() {
+    try { router.push({ uri: 'pages/music' }) }
+    catch (e) { console.log('[MaruHome] ' + e) }
+  },
+  goSensor() {
+    console.log('[MaruHome] sensor - TBD')
+  }
+}
+</script>
+
+<style>
+.page {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  justify-content: center;
+  align-items: center;
+}
+.grid {
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 12px 10px;
+  justify-content: space-between;
+  width: 380px;
+}
+.app-item {
+  width: 88px;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  justify-content: center;
+  align-items: center;
+}
+.icon-text {
+  font-size: 28px;
+}
+.app-name {
+  font-size: 16px;
+  color: #ffffff;
+  margin-top: 6px;
+  lines: 1;
+  text-overflow: ellipsis;
+  width: 80px;
+  text-align: center;
+}
+</style>

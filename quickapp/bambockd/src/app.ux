@@ -1,0 +1,10 @@
+<script>
+export default {
+  onCreate() {
+    console.log('竹知了 App created')
+  },
+  onDestroy() {
+    console.log('竹知了 App destroyed')
+  }
+}
+</script>

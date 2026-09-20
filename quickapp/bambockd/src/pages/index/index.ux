@@ -1,0 +1,102 @@
+<!-- 竹知了 - 摇一摇就叫的蝉 -->
+<template>
+  <div class="container">
+    <text class="title">{{title}}</text>
+    <text class="status">加速度: {{ax}}, {{ay}}, {{az}}</text>
+    <text class="magnitude">magnitude: {{magnitude}}</text>
+    <text class="threshold">阈值: {{threshold}}</text>
+    <text class="state">{{isPlaying ? '鸣叫中...' : '静默等待摇晃...'}}</text>
+  </div>
+</template>
+
+<style>
+.container {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+}
+.title {
+  font-size: 48px;
+  color: #00ff00;
+  margin-bottom: 30px;
+}
+.status {
+  font-size: 16px;
+  color: #888888;
+  margin-bottom: 10px;
+}
+.magnitude {
+  font-size: 16px;
+  color: #888888;
+  margin-bottom: 10px;
+}
+.threshold {
+  font-size: 16px;
+  color: #666666;
+  margin-bottom: 20px;
+}
+.state {
+  font-size: 20px;
+  color: #ffffff;
+}
+</style>
+
+<script>
+import sensor from '@system.sensor'
+
+export default {
+  private: {
+    title: '竹知了',
+    ax: 0,
+    ay: 0,
+    az: 0,
+    magnitude: 0,
+    threshold: 2,
+    isPlaying: false,
+    lastPlayTime: 0
+  },
+
+  onInit() {
+    console.log('竹知了: initializing...')
+    this.startSensor()
+  },
+
+  onDestroy() {
+    console.log('竹知了: destroying...')
+    this.stopSensor()
+  },
+
+  startSensor() {
+    console.log('竹知了: startSensor')
+    sensor.subscribeAccelerometer({
+      interval: 'normal',
+      callback: (data) => {
+        this.ax = Math.round(data.x)
+        this.ay = Math.round(data.y)
+        this.az = Math.round(data.z)
+        this.magnitude = Math.round(Math.sqrt(data.x * data.x + data.y * data.y + data.z * data.z))
+
+        if (this.magnitude > this.threshold && !this.isPlaying) {
+          var now = Date.now()
+          if (now - this.lastPlayTime > 3000) {
+            this.lastPlayTime = now
+            this.isPlaying = true
+            console.log('竹知了: TRIGGERED! magnitude=' + this.magnitude)
+            setTimeout(() => { this.isPlaying = false }, 2000)
+          }
+        }
+      },
+      fail: (data, code) => {
+        console.log('竹知了: sensor error ' + code + ': ' + data)
+      }
+    })
+  },
+
+  stopSensor() {
+    sensor.unsubscribeAccelerometer()
+  }
+}
+</script>

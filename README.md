@@ -3,7 +3,7 @@
 
 ## 一、作品简介
 
-合页是一套基于 openvela 与 LCKFB 黄山派（SF32LB52）开发板的智能灵感记录 AI 硬件原型。在 SF32LB52 GPU 驱动缺失、LVGL 严重卡顿的限制下，转向 VelaJS 快应用框架构建系统级 UI，实现锁屏、桌面 Launcher、设置、音乐播放器及基于 IMU 的"竹知了"传感器交互应用。同时完成 SF32LB52 音频驱动从零开发（521 行）、文件触发式跨进程 IPC 机制、蓝牙 PAN 框架搭建，并自建 vela_config_lookup Kconfig 智能查询 Skill。全程 AI-Native 开发，MiMoCode 为主力工具（113 session），单人 30 天完成驱动层到应用层的全栈交付。外壳采用环保可降解植物纤维基材料制成，外设采用 REDMI K80 Ultra 的 1115X 大师级同轴扬声器，震动马达采用 Xiaomi 14 Pro 的 0916 X轴线性马达，电池采用 Xiaomi Watch S4 Sport 的高密度586mAh电池。 
+合页是一套基于 openvela 与 LCKFB 黄山派（SF32LB52）开发板的智能灵感记录 AI 硬件原型。在 SF32LB52 GPU 驱动缺失、LVGL 严重卡顿的限制下，转向 VelaJS 快应用框架构建系统级 UI，实现锁屏、桌面 Launcher、设置、音乐播放器及基于 IMU 的"竹知了"传感器交互应用。同时完成 SF32LB52 音频驱动从零开发（521 行）、文件触发式跨进程 IPC 机制、蓝牙 PAN 框架搭建，并自建 vela_config_lookup Kconfig 智能查询 Skill。全程 AI-Native 开发，MiMoCode 为主力工具（113 session），单人 30 天完成驱动层到应用层的全栈交付。外壳采用环保可降解植物纤维基材料制成，外设采用 REDMI K80 Ultra 的 1115X 大师级同轴扬声器，震动马达采用 Xiaomi 14 Pro 的 0916 X轴线性马达，电池采用 Xiaomi Watch S4 Sport 的高密度586mAh电池。 拓展板采用模块化设计，支持多种模块互换与POGO触点充电。
 
 **亮点：**
 - VelaJS 快应用构建完整手表 Launcher，绕过 LVGL 无 GPU 加速的性能瓶颈

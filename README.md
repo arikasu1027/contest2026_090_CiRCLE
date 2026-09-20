@@ -1,5 +1,4 @@
 
-```markdown
 # 合页
 
 ## 一、作品简介
@@ -21,7 +20,7 @@
 
 ## 三、目录结构
 
-```
+
 contest2026_090_CiRCLE/
 ├── app/
 │   └── audio_player/          — C 音频守护进程（274行），轮询 /data/play_trigger，WAV 解析 + 正弦波测试
@@ -41,7 +40,7 @@ contest2026_090_CiRCLE/
 ├── logs/
 │   └── arikasu1027/           — AI Coding 日志（122 个 session），由插件自动生成
 └── docs/                      — 技术报告及相关文档
-```
+
 
 ## 四、运行方式
 
@@ -69,7 +68,7 @@ cd contest2026_090_CiRCLE
 ### 烧录
 
 ```bash
-# 编译产物位于 build/ 目录，通过 SF32LB52 烧录工具写入开发板
+# 编译产物位于 \openvela\cmake_out\lckfb_huangshan_pi_nsh\ 目录，通过 SF32LB52 烧录工具写入开发板
 # 具体烧录方式参考 LCKFB 黄山派官方文档
 ```
 
@@ -77,7 +76,7 @@ cd contest2026_090_CiRCLE
 
 ```bash
 # 烧录完成后开发板自动启动，通过 USB 转 UART 连接串口：
-# 波特率 115200，nsh 终端可用
+# 波特率 1000000，nsh 终端可用
 
 # 启动后系统自动进入 MaruHome Launcher（锁屏 → 桌面）
 # 桌面磁贴可点击进入设置、音乐等页面
@@ -86,6 +85,7 @@ cd contest2026_090_CiRCLE
 nsh> audio_player &
 
 # 竹知了应用：从桌面点击进入，摇晃开发板触发蝉鸣
+# 这个修炸了用不了
 ```
 
 ### 自定义 Skill（vela_config_lookup）
@@ -125,4 +125,4 @@ bash test_skill.sh
 - 蓝牙 PAN 多 PR 协同合入的依赖分析（#121、#41、vendor_sifli #31）由 AI 辅助完成
 
 完整对话日志见 `logs/arikasu1027/` 目录（122 个 session，由 AI Coding 插件自动生成，未手动删改）。
-```
+

@@ -1,0 +1,28 @@
+name: vela_config_lookup
+version: "0.1.0"
+description: |
+  查询 OpenVela 项目的 Kconfig 配置项。
+  支持：精确查找 .config 中的值、依赖分析、模糊搜索未启用项。
+triggers:
+  - "CONFIG_"
+  - "defconfig"
+  - "kconfig"
+parameters:
+  type: object
+  required: ["query"]
+  properties:
+    query:
+      type: string
+      description: "配置项名称（精确或模糊）"
+    workspace:
+      type: string
+      description: "OpenVela 工作区根目录"
+    build_dir:
+      type: string
+      description: "构建输出目录，默认 workspace/build"
+sub_agent:
+  name: config_investigator
+  max_turns: 1
+executor:
+  type: script
+  entry: "python3 skills/vela_config_lookup/vela_config_query.py"

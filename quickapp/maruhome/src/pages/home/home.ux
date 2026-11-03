@@ -1,23 +1,11 @@
 <template>
   <div class="page">
     <div class="grid">
-      <div class="app-item" onclick="goSettings">
-        <div class="icon-wrap" style="background-color: #333333;">
-          <text class="icon-text">&#x2699;</text>
+      <div class="app-item" for="{{apps}}" tid="uri" onclick="openPage($item)">
+        <div class="icon-wrap">
+          <text class="icon-text">{{$item.letter}}</text>
         </div>
-        <text class="app-name">设置</text>
-      </div>
-      <div class="app-item" onclick="goMusic">
-        <div class="icon-wrap" style="background-color: #5c2a1a;">
-          <text class="icon-text">&#x1F3B5;</text>
-        </div>
-        <text class="app-name">音乐</text>
-      </div>
-      <div class="app-item" onclick="goSensor">
-        <div class="icon-wrap" style="background-color: #1a472a;">
-          <text class="icon-text">&#x1F997;</text>
-        </div>
-        <text class="app-name">竹知了</text>
+        <text class="app-name">{{$item.name}}</text>
       </div>
     </div>
   </div>
@@ -26,17 +14,28 @@
 <script>
 import router from '@system.router'
 
+// 真机 LVGL 打不开包内 png（unknown driver letter），一律用文字图标
+const APPS = [
+  { uri: 'pages/cicada', name: '竹知了', letter: '蝉' },
+  { uri: 'pages/messages', name: '消息', letter: '信' },
+  { uri: 'pages/intercom', name: '对讲', letter: '讲' },
+  { uri: 'pages/calculator', name: '计算器', letter: '算' },
+  { uri: 'pages/settings', name: '设置', letter: '设' },
+  { uri: 'pages/music', name: '音乐', letter: '音' }
+]
+
 export default {
-  goSettings() {
-    try { router.push({ uri: 'pages/settings' }) }
-    catch (e) { console.log('[MaruHome] ' + e) }
+  private: {
+    apps: APPS
   },
-  goMusic() {
-    try { router.push({ uri: 'pages/music' }) }
-    catch (e) { console.log('[MaruHome] ' + e) }
-  },
-  goSensor() {
-    console.log('[MaruHome] sensor - TBD')
+
+  openPage(item) {
+    if (!item || !item.uri) return
+    try {
+      router.push({ uri: item.uri })
+    } catch (e) {
+      console.error('[MaruHome] open ' + item.uri + ': ' + e)
+    }
   }
 }
 </script>
@@ -48,37 +47,39 @@ export default {
   background-color: #000000;
   justify-content: center;
   align-items: center;
+  padding: 45px 27px;
 }
 .grid {
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 12px 10px;
-  justify-content: space-between;
-  width: 380px;
+  justify-content: flex-start;
+  width: 100%;
 }
 .app-item {
-  width: 88px;
+  width: 33.33%;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 22px;
 }
 .icon-wrap {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background-color: #242424;
   justify-content: center;
   align-items: center;
 }
 .icon-text {
-  font-size: 28px;
+  font-size: 26px;
+  color: #277AF7;
 }
 .app-name {
-  font-size: 16px;
-  color: #ffffff;
-  margin-top: 6px;
+  font-size: 13px;
+  color: #F2F2F2;
+  margin-top: 8px;
   lines: 1;
   text-overflow: ellipsis;
-  width: 80px;
+  width: 90px;
   text-align: center;
 }
 </style>

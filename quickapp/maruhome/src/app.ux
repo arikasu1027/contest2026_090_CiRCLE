@@ -1,4 +1,53 @@
 <script>
+// HyperOS / Miuix 深色色板（手表）
+export const C = {
+  primary: '#277AF7',
+  primaryVariant: '#0073DD',
+  onPrimary: '#FFFFFF',
+  disabledPrimary: '#253E64',
+  background: '#242424',
+  surface: '#000000',
+  onSurface: '#F2F2F2',
+  onBg: 'rgba(255,255,255,0.9)',
+  onVariant: '#787E96',
+  onSummary: '#737373',
+  outline: '#404040',
+  divider: '#393939',
+  error: '#F12522',
+  tertiaryBg: '#2B3B54',
+  tertiaryFg: '#4788FF',
+  sliderBg: 'rgba(255,255,255,0.15)',
+  sliderKnob: '#5DAAFF'
+}
+
+// 左缘侧滑返回：返回 true 表示已消费
+export function handleEdgeSwipe(page, e, onBack) {
+  var type = e.type
+  if (type === 'touchstart') {
+    page._sx = e.touches[0].clientX
+    page._sp = 0
+    return false
+  }
+  if (type === 'touchmove') {
+    var dx = e.touches[0].clientX - page._sx
+    if (dx > 0 && page._sx < 30) {
+      page._sp = Math.min(dx / 80, 1)
+      if (page.onSwipeProgress) page.onSwipeProgress(page._sp)
+    }
+    return false
+  }
+  if (type === 'touchend') {
+    var dx2 = e.changedTouches[0].clientX - page._sx
+    if (dx2 > 80 && page._sx < 30) {
+      onBack()
+      return true
+    }
+    if (page.onSwipeProgress) page.onSwipeProgress(0)
+    return false
+  }
+  return false
+}
+
 export default {
   onCreate() {
     console.log('[MaruHome] app created')

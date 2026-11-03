@@ -1,0 +1,5 @@
+config LVX_USE_DEMO_CONTEST2026_090_BTPAND
+        bool "BT PAN daemon (btpand)"
+        default y
+        ---help---
+                Bluetooth PAN daemon: auto-enable, auto-pair, auto-PAN.

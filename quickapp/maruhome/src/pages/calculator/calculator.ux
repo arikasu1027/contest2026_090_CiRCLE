@@ -1,0 +1,249 @@
+<template>
+  <div class="page"
+    ontouchstart="onTouchStart"
+    ontouchmove="onTouchMove"
+    ontouchend="onTouchEnd">
+    <div class="header">
+      <text class="header-title">计算器</text>
+    </div>
+    <div class="display">
+      <text class="expr">{{expr}}</text>
+      <text class="result">{{result}}</text>
+    </div>
+    <div class="keys">
+      <div class="key-row">
+        <div class="key key-fn" onclick="onKey('C')"><text class="key-label label-fn">C</text></div>
+        <div class="key key-fn" onclick="onKey('DEL')"><text class="key-label label-fn">&lt;</text></div>
+        <div class="key key-fn" onclick="onKey('%')"><text class="key-label label-fn">%</text></div>
+        <div class="key key-op" onclick="onKey('/')"><text class="key-label label-plain">÷</text></div>
+      </div>
+      <div class="key-row">
+        <div class="key" onclick="onKey('7')"><text class="key-label">7</text></div>
+        <div class="key" onclick="onKey('8')"><text class="key-label">8</text></div>
+        <div class="key" onclick="onKey('9')"><text class="key-label">9</text></div>
+        <div class="key key-op" onclick="onKey('*')"><text class="key-label label-plain">×</text></div>
+      </div>
+      <div class="key-row">
+        <div class="key" onclick="onKey('4')"><text class="key-label">4</text></div>
+        <div class="key" onclick="onKey('5')"><text class="key-label">5</text></div>
+        <div class="key" onclick="onKey('6')"><text class="key-label">6</text></div>
+        <div class="key key-op" onclick="onKey('-')"><text class="key-label label-plain">−</text></div>
+      </div>
+      <div class="key-row">
+        <div class="key" onclick="onKey('1')"><text class="key-label">1</text></div>
+        <div class="key" onclick="onKey('2')"><text class="key-label">2</text></div>
+        <div class="key" onclick="onKey('3')"><text class="key-label">3</text></div>
+        <div class="key key-op" onclick="onKey('+')"><text class="key-label label-plain">+</text></div>
+      </div>
+      <div class="key-row">
+        <div class="key key-wide" onclick="onKey('0')"><text class="key-label">0</text></div>
+        <div class="key" onclick="onKey('.')"><text class="key-label">.</text></div>
+        <div class="key key-eq" onclick="onKey('=')"><text class="key-label label-plain">=</text></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  private: {
+    expr: '',
+    result: '0',
+    touchStartX: 0,
+    swipeProgress: 0
+  },
+
+  onTouchStart(e) {
+    this.touchStartX = e.touches[0].clientX
+    this.swipeProgress = 0
+  },
+
+  onTouchMove(e) {
+    var diff = e.touches[0].clientX - this.touchStartX
+    if (diff > 0 && this.touchStartX < 30) {
+      this.swipeProgress = Math.min(diff / 80, 1)
+    }
+  },
+
+  onTouchEnd(e) {
+    var diff = e.changedTouches[0].clientX - this.touchStartX
+    if (diff > 80 && this.touchStartX < 30) {
+      try { router.back() } catch (err) { console.error('[Calc] back: ' + err) }
+    } else {
+      this.swipeProgress = 0
+    }
+  },
+
+  onKey(k) {
+    if (k === 'C') {
+      this.expr = ''
+      this.result = '0'
+      return
+    }
+    if (k === 'DEL') {
+      this.expr = this.expr.substring(0, this.expr.length - 1)
+      return
+    }
+    if (k === '=') {
+      this.evaluate()
+      return
+    }
+    if (k === '%') {
+      try {
+        var v = this.evaluateExpr(this.expr)
+        if (v !== null) {
+          this.result = String(v / 100)
+          this.expr = this.result
+        }
+      } catch (e) {
+        this.result = '错误'
+      }
+      return
+    }
+    this.expr = this.expr + k
+  },
+
+  evaluateExpr(s) {
+    if (!s) return null
+    if (!/^[0-9+\-*/.]+$/.test(s)) return null
+    var tokens = s.match(/[0-9.]+|[+\-*/]/g)
+    if (!tokens) return null
+    var vals = []
+    var ops = []
+    var prec = { '+': 1, '-': 1, '*': 2, '/': 2 }
+    function apply() {
+      var op = ops.pop()
+      var b = vals.pop()
+      var a = vals.pop()
+      if (a === undefined || b === undefined) throw new Error('bad')
+      if (op === '+') vals.push(a + b)
+      else if (op === '-') vals.push(a - b)
+      else if (op === '*') vals.push(a * b)
+      else if (op === '/') {
+        if (b === 0) throw new Error('div0')
+        vals.push(a / b)
+      }
+    }
+    for (var i = 0; i < tokens.length; i++) {
+      var t = tokens[i]
+      if (t === '+' || t === '-' || t === '*' || t === '/') {
+        while (ops.length && prec[ops[ops.length - 1]] >= prec[t]) apply()
+        ops.push(t)
+      } else {
+        vals.push(parseFloat(t))
+      }
+    }
+    while (ops.length) apply()
+    if (vals.length !== 1 || isNaN(vals[0])) throw new Error('bad')
+    return vals[0]
+  },
+
+  evaluate() {
+    try {
+      var v = this.evaluateExpr(this.expr)
+      if (v === null) {
+        this.result = '0'
+        return
+      }
+      var r = Math.round(v * 1e10) / 1e10
+      this.result = String(r)
+      this.expr = this.result
+    } catch (e) {
+      this.result = '错误'
+      console.error('[Calc] eval: ' + e)
+    }
+  }
+}
+</script>
+
+<style>
+.page {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  flex-direction: column;
+  padding: 32px 16px 20px 16px;
+}
+.header {
+  margin-bottom: 4px;
+}
+.header-title {
+  font-size: 20px;
+  color: #F2F2F2;
+  font-weight: bold;
+}
+.display {
+  width: 100%;
+  height: 80px;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+  padding: 4px 4px;
+}
+.expr {
+  font-size: 14px;
+  color: #787E96;
+  lines: 1;
+  width: 100%;
+  text-align: left;
+}
+.result {
+  font-size: 26px;
+  color: #F2F2F2;
+  font-weight: bold;
+  lines: 1;
+  width: 100%;
+  text-align: left;
+}
+.keys {
+  width: 100%;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.key-row {
+  width: 100%;
+  height: 56px;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-shrink: 0;
+  margin-bottom: 6px;
+}
+.key {
+  width: 78px;
+  height: 56px;
+  flex-shrink: 0;
+  background-color: #242424;
+  border-radius: 14px;
+  justify-content: center;
+  align-items: center;
+}
+.key-wide {
+  width: 168px;
+}
+.key-fn {
+  background-color: #2B3B54;
+}
+.key-op {
+  background-color: #277AF7;
+}
+.key-eq {
+  background-color: #277AF7;
+  width: 78px;
+}
+.key-label {
+  font-size: 22px;
+  color: #F2F2F2;
+  text-align: center;
+}
+.label-plain {
+  color: #FFFFFF;
+  font-weight: bold;
+}
+.label-fn {
+  color: #4788FF;
+}
+</style>

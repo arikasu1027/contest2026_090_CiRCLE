@@ -8,9 +8,13 @@
   "deviceTypeList": ["watch"],
   "features": [
     { "name": "system.router" },
-    { "name": "system.brightness" },
+    { "name": "system.app" },
+    { "name": "system.prompt" },
+    { "name": "system.sensor" },
+    { "name": "system.audio" },
+    { "name": "system.file" },
     { "name": "system.storage" },
-    { "name": "system.file" }
+    { "name": "system.brightness" }
   ],
   "config": {
     "logLevel": "log",
@@ -21,6 +25,10 @@
     "pages": {
       "pages/lock": { "component": "lock" },
       "pages/home": { "component": "home" },
+      "pages/cicada": { "component": "cicada" },
+      "pages/messages": { "component": "messages" },
+      "pages/intercom": { "component": "intercom" },
+      "pages/calculator": { "component": "calculator" },
       "pages/settings": { "component": "settings" },
       "pages/music": { "component": "music" }
     }

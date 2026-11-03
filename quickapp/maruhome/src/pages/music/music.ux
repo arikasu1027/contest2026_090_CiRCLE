@@ -3,21 +3,39 @@
     ontouchstart="onTouchStart"
     ontouchmove="onTouchMove"
     ontouchend="onTouchEnd">
-
     <div class="swipe-indicator" style="opacity: {{swipeProgress}};">
       <text class="swipe-arrow">&#x2039;</text>
     </div>
 
     <div class="header">
       <text class="header-title">音乐</text>
+      <text class="sub" if="{{scanPath}}">来源 {{scanPath}}</text>
     </div>
 
-    <div class="player">
-      <text class="song-name">{{songName}}</text>
-      <text class="song-status">{{statusText}}</text>
+    <div class="empty" if="{{tracks.length === 0}}">
+      <text class="empty-title">{{emptyTitle}}</text>
+      <text class="empty-hint">TF 卡路径 /data/tf · 修复后自动列出</text>
+      <div class="btn-rescan" onclick="rescan">
+        <text class="btn-rescan-text">重新扫描</text>
+      </div>
+    </div>
 
+    <scroll class="list" scroll-y="true" if="{{tracks.length > 0}}">
+      <div class="track" for="{{tracks}}" tid="uri" onclick="playTrack($item)">
+        <text class="track-name">{{$item.name}}</text>
+        <text class="track-playing" if="{{currentUri === $item.uri}}">▶</text>
+      </div>
+    </scroll>
+
+    <div class="player" if="{{tracks.length > 0}}">
+      <text class="now">{{currentName || '未选择'}}</text>
       <div class="controls">
-        <text class="play-btn" onclick="togglePlay">{{isPlaying ? '&#x23F8;' : '&#x25B6;'}}</text>
+        <div class="ctrl" onclick="togglePlay">
+          <text class="ctrl-label">{{isPlaying ? '暂停' : '播放'}}</text>
+        </div>
+        <div class="ctrl ctrl-stop" onclick="stopPlay">
+          <text class="ctrl-label">停止</text>
+        </div>
       </div>
     </div>
   </div>
@@ -26,43 +44,132 @@
 <script>
 import router from '@system.router'
 import file from '@system.file'
+import audio from '@system.audio'
+import prompt from '@system.prompt'
+
+const PATHS = ['/data/tf/', '/data/tf', '/mnt/sdcard/', '/data/media/']
 
 export default {
   private: {
+    tracks: [],
+    scanPath: '',
+    emptyTitle: '未检测到音频',
+    currentUri: '',
+    currentName: '',
     isPlaying: false,
-    songName: '蝉鸣',
-    statusText: '点击播放',
     touchStartX: 0,
     swipeProgress: 0
   },
 
-  togglePlay() {
-    if (this.isPlaying) {
-      this.isPlaying = false
-      this.statusText = '已暂停'
-      console.log('[Music] paused')
-    } else {
-      this.isPlaying = true
-      this.statusText = '播放中...'
-      console.log('[Music] writing trigger')
-      file.write({
-        uri: '/data/play_trigger',
-        data: 'play',
-        success: () => {
-          console.log('[Music] trigger written')
-        },
-        fail: (data, code) => {
-          console.log('[Music] trigger write failed: ' + code)
-          this.isPlaying = false
-          this.statusText = '触发失败'
-        }
-      })
-      /* Auto-reset after 5 seconds */
-      setTimeout(() => {
-        this.isPlaying = false
-        this.statusText = '点击播放'
-      }, 5000)
+  onInit() {
+    this.scan()
+  },
+
+  onDestroy() {
+    try { audio.stop() } catch (e) {}
+  },
+
+  rescan() {
+    this.emptyTitle = '扫描中…'
+    this.scan()
+  },
+
+  scan() {
+    this.tryList(0)
+  },
+
+  tryList(index) {
+    if (index >= PATHS.length) {
+      this.emptyTitle = '未检测到音频'
+      this.scanPath = ''
+      return
     }
+    var uri = PATHS[index]
+    try {
+      file.list({
+        uri: uri,
+        success: function (data) {
+          var list = (data && data.fileList) || []
+          var tracks = []
+          for (var i = 0; i < list.length; i++) {
+            var item = list[i] || {}
+            var p = item.uri || ''
+            var name = this.baseName(p)
+            if (!this.isAudio(name)) continue
+            tracks.push({ uri: this.resolveUri(uri, p), name: name })
+          }
+          if (tracks.length === 0) {
+            this.tryList(index + 1)
+            return
+          }
+          this.tracks = tracks
+          this.scanPath = uri
+          this.emptyTitle = '未检测到音频'
+        }.bind(this),
+        fail: function (data, code) {
+          console.error('[Music] list ' + uri + ' code=' + code)
+          this.tryList(index + 1)
+        }.bind(this)
+      })
+    } catch (e) {
+      console.error('[Music] list ex: ' + e)
+      this.tryList(index + 1)
+    }
+  },
+
+  baseName(p) {
+    if (!p) return ''
+    var s = String(p).replace(/\/+$/, '')
+    var i = s.lastIndexOf('/')
+    return i >= 0 ? s.substring(i + 1) : s
+  },
+
+  isAudio(name) {
+    var n = String(name).toLowerCase()
+    return n.endsWith('.mp3') || n.endsWith('.wav') || n.endsWith('.m4a') ||
+      n.endsWith('.aac') || n.endsWith('.flac') || n.endsWith('.ogg')
+  },
+
+  resolveUri(dir, full) {
+    if (full && full.charAt(0) === '/') return full
+    var d = dir.charAt(dir.length - 1) === '/' ? dir : dir + '/'
+    return d + String(full || '')
+  },
+
+  playTrack(item) {
+    if (!item || !item.uri) return
+    this.currentUri = item.uri
+    this.currentName = item.name
+    try {
+      audio.src = item.uri
+      audio.play()
+      this.isPlaying = true
+      prompt.showToast({ message: item.name })
+    } catch (e) {
+      console.error('[Music] play: ' + e)
+      this.isPlaying = false
+      prompt.showToast({ message: '播放失败' })
+    }
+  },
+
+  togglePlay() {
+    if (!this.currentUri) return
+    try {
+      if (this.isPlaying) {
+        audio.pause()
+        this.isPlaying = false
+      } else {
+        audio.play()
+        this.isPlaying = true
+      }
+    } catch (e) {
+      console.error('[Music] toggle: ' + e)
+    }
+  },
+
+  stopPlay() {
+    try { audio.stop() } catch (e) {}
+    this.isPlaying = false
   },
 
   onTouchStart(e) {
@@ -80,7 +187,7 @@ export default {
   onTouchEnd(e) {
     var diff = e.changedTouches[0].clientX - this.touchStartX
     if (diff > 80 && this.touchStartX < 30) {
-      router.back()
+      try { router.back() } catch (err) { console.error('[Music] back: ' + err) }
     } else {
       this.swipeProgress = 0
     }
@@ -94,53 +201,130 @@ export default {
   height: 100%;
   background-color: #000000;
   flex-direction: column;
-  padding: 16px;
+  padding: 36px 0 0 0;
 }
 .swipe-indicator {
   position: fixed;
   left: 0;
   top: 50%;
-  width: 30px;
-  height: 60px;
-  background-color: rgba(255,255,255,0.15);
+  width: 28px;
+  height: 56px;
+  background-color: rgba(255, 255, 255, 0.12);
   border-radius: 0 12px 12px 0;
   justify-content: center;
   align-items: center;
-  z-index: 50;
 }
 .swipe-arrow {
-  font-size: 28px;
-  color: #ffffff;
+  font-size: 26px;
+  color: #FFFFFF;
 }
 .header {
-  margin-bottom: 20px;
+  padding: 0 24px;
+  margin-bottom: 12px;
 }
 .header-title {
   font-size: 24px;
-  color: #ffffff;
+  color: #F2F2F2;
+  font-weight: bold;
 }
-.player {
+.sub {
+  font-size: 12px;
+  color: #737373;
+  margin-top: 4px;
+}
+.empty {
   flex: 1;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  padding: 0 32px;
 }
-.song-name {
-  font-size: 24px;
-  color: #ffffff;
+.empty-img {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+.empty-title {
+  font-size: 18px;
+  color: #F2F2F2;
   margin-bottom: 8px;
 }
-.song-status {
-  font-size: 16px;
-  color: rgba(255,255,255,0.5);
-  margin-bottom: 30px;
+.empty-hint {
+  font-size: 13px;
+  color: #787E96;
+  text-align: center;
+  margin-bottom: 20px;
 }
-.play-btn {
-  font-size: 48px;
-  color: #007AFF;
-  width: 80px;
-  height: 80px;
+.btn-rescan {
+  height: 40px;
+  padding: 0 28px;
+  background-color: #277AF7;
+  border-radius: 20px;
   justify-content: center;
   align-items: center;
+}
+.btn-rescan-text {
+  font-size: 15px;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+.list {
+  flex: 1;
+  width: 100%;
+  padding: 0 24px;
+}
+.track {
+  width: 100%;
+  height: 52px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom-width: 1px;
+  border-bottom-color: #393939;
+}
+.track-name {
+  font-size: 16px;
+  color: #F2F2F2;
+  flex: 1;
+  lines: 1;
+  text-overflow: ellipsis;
+}
+.track-playing {
+  font-size: 16px;
+  color: #277AF7;
+  margin-left: 8px;
+}
+.player {
+  padding: 12px 24px 28px 24px;
+  border-top-width: 1px;
+  border-top-color: #393939;
+}
+.now {
+  font-size: 14px;
+  color: #787E96;
+  margin-bottom: 10px;
+  lines: 1;
+  text-overflow: ellipsis;
+}
+.controls {
+  flex-direction: row;
+  justify-content: center;
+}
+.ctrl {
+  height: 44px;
+  padding: 0 28px;
+  background-color: #277AF7;
+  border-radius: 22px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+}
+.ctrl-stop {
+  background-color: #242424;
+}
+.ctrl-label {
+  font-size: 15px;
+  color: #FFFFFF;
 }
 </style>

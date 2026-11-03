@@ -1,128 +1,147 @@
+# 合页 · CiRCLE
 
-# 合页
+基于 **openvela + LCKFB 黄山派（SF32LB52）** 的小屏智能硬件作品：OLED 触摸屏 + Vela 快应用系统 UI，底层服务用 C 保证效率。
 
-## 一、作品简介
+> 灵感来自 Cybiko / 任天堂 NDS「方舟雷达」一类近场社交玩具；原设想为电动自行车 AR 导航，因硬件受阻改为可携带的「合页」形态。
 
-合页是一套基于 openvela 与 LCKFB 黄山派（SF32LB52）开发板的智能灵感记录 AI 硬件原型。在 SF32LB52 GPU 驱动缺失、LVGL 严重卡顿的限制下，转向 VelaJS 快应用框架构建系统级 UI，实现锁屏、桌面 Launcher、设置、音乐播放器及基于 IMU 的"竹知了"传感器交互应用。同时完成 SF32LB52 音频驱动从零开发（521 行）、文件触发式跨进程 IPC 机制、蓝牙 PAN 框架搭建，并自建 vela_config_lookup Kconfig 智能查询 Skill。全程 AI-Native 开发，MiMoCode 为主力工具（113 session），单人 30 天完成驱动层到应用层的全栈交付。外壳采用环保可降解植物纤维基材料制成，外设采用 REDMI K80 Ultra 的 1115X 大师级同轴扬声器，震动马达采用 Xiaomi 14 Pro 的 0916 X轴线性马达，电池采用 Xiaomi Watch S4 Sport 的高密度586mAh电池。 拓展板采用模块化设计，支持多种模块互换与POGO触点充电。
+---
 
-**亮点：**
-- VelaJS 快应用构建完整手表 Launcher，绕过 LVGL 无 GPU 加速的性能瓶颈
-- SF32LB52 音频驱动全新开发，AUDCODEC DAC + PA42 Class-D PA 完整通路
-- 自建 vela_config_lookup Skill，解决 AI 不了解 openvela Kconfig 依赖链的痛点
-- 竹知了：加速度传感器触发蝉鸣音效，探索小屏设备物理交互新范式
+## 一、项目简介
 
-## 二、选题方向
+| 项 | 说明 |
+|----|------|
+| 硬件 | 黄山派 SF32LB52，OLED 触摸屏，体积小、便于做外壳 |
+| 系统 | openvela（NuttX + 快应用运行时） |
+| UI | **VelaJS 快应用**（曾试原生 LVGL，美观/完成度不够后整体转向） |
+| 底层 | C 原生服务 / 驱动（音频、蓝牙、时间守护等） |
+| 形态 | 「合页」——曾尝试类似 MIX Flip 的铰链，后简化结构 |
 
-**AI 硬件产品创新 + 新硬件平台适配**
+「擦肩消息」：两台设备通过 BLE 广播昵称与联系方式，靠近时互相发现；可用 DeviceID 错开广播相位。
 
-- AI 硬件产品创新：以 openvela + SF32LB52 构建小屏智能硬件原型，涵盖系统级 UI、音频、传感器交互等完整链路
-- 新硬件平台适配：完成 SF32LB52 音频驱动全新开发、传感器接入、按键映射等硬件适配工作
+---
 
-## 三、目录结构
+## 二、当前软件能力（以本仓代码为准）
 
+单应用 **MaruHome**（`com.circle.home`）多页面切换，入口 `pages/lock`：
 
+| 页面 | 路径 | 说明 |
+|------|------|------|
+| 锁屏 | `pages/lock` | 时钟，上滑解锁 |
+| 桌面 | `pages/home` | 应用磁贴网格 |
+| 计算器 | `pages/calculator` | 本地四则运算 |
+| 设置 | `pages/settings` | 名片展示、近场交换开关、时间、亮度 |
+| 竹知了 | `pages/cicada` | 加速度阈值触发蝉鸣（`system.sensor` + `system.audio`） |
+| 音乐 | `pages/music` | 本地文件扫描 / 播放（依赖 media 栈，见「已知限制」） |
+| 消息 | `pages/messages` | 近场名片占位（BLE 交换待固件 feature 就绪） |
+| 对讲 | `pages/intercom` | 占位页 |
+
+构建产物：`quickapp/maruhome/dist/com.circle.home.debug.1.0.0.rpk`
+
+---
+
+## 三、目录结构（本仓 `dev-ai-contest-2026`）
+
+```
 contest2026_090_CiRCLE/
 ├── app/
-│   └── audio_player/          — C 音频守护进程（274行），轮询 /data/play_trigger，WAV 解析 + 正弦波测试
-├── quickapp/
-│   ├── maruhome/              — MaruHome Launcher 快应用（568行）
-│   │   └── src/pages/
-│   │       ├── lock/          — 锁屏页面（132行），上滑解锁
-│   │       ├── home/          — 桌面页面（84行），3列应用磁贴网格
-│   │       ├── settings/      — 设置页面（168行），蓝牙/显示/声音/系统/关于
-│   │       └── music/         — 音乐页面（146行），播放控制
-│   └── bambockd/              — 竹知了交互应用（162行），IMU 加速度触发蝉鸣
-├── vendor/
-│   └── sifli/boards/.../src/
-│       └── sf32lb_audio.c     — SF32LB52 音频驱动（521行），AUDCODEC DAC + PA42
+│   ├── btpand/                 # 蓝牙 PAN 相关原生程序
+│   │   ├── CMakeLists.txt
+│   │   ├── Kconfig
+│   │   └── btpand_main.c
+│   └── timesetd/               # 时间设置守护：轮询 /data/tmp/settime.req → settimeofday
+│       ├── CMakeLists.txt
+│       ├── Kconfig             # CONFIG_LVX_USE_DEMO_CONTEST2026_090_TIMESETD
+│       └── timesetd_main.c
 ├── board/
-│   └── contest_board/         — 开发板配置文件
-├── logs/
-│   └── arikasu1027/           — AI Coding 日志（122 个 session），由插件自动生成
-└── docs/                      — 技术报告及相关文档
-
-
-## 四、运行方式
-
-### 环境准备
-
-```bash
-# 1. 克隆仓库
-git clone https://github.com/open-vela/contest2026_090_CiRCLE.git
-cd contest2026_090_CiRCLE
-
-# 2. 拉取 openvela 主仓（如尚未配置）
-# 参考 openvela 官方文档完成 repo init / repo sync
+│   └── hyw/configs/hyw/
+│       └── defconfig           # 本板实际使用的 defconfig
+├── contest2026_090_CiRCLE.xml # repo manifest（linkfile 等）
+└── quickapp/
+    └── maruhome/               # 系统桌面快应用（单应用多页面）
+        ├── package.json
+        ├── dist/*.rpk
+        └── src/
+            ├── manifest.json
+            ├── app.ux
+            ├── common/         # 图标、cicada.wav 等资源
+            └── pages/          # lock / home / calculator / settings /
+                                # cicada / music / messages / intercom
 ```
 
-### 编译
+说明：历史目录 `quickapp/bambockd`、`app/audio_player` 已在本分支删除，功能并入或由新方案替代。
 
-```bash
-# 使用 contest_board defconfig 编译（基于 SF32LB52）
-./build.sh vendor/sifli/boards/sf32lb52/contest_board --cmake
+---
 
-# 首次编译或切换 defconfig 后建议：
-# ./build.sh vendor/sifli/boards/sf32lb52/contest_board --cmake distclean
+## 四、构建与运行
+
+### 固件（openvela 树内）
+
+实际构建配置（见 `cmake_out` 中 `BOARD_CONFIG`）：
+
+```text
+contest2026_090_CiRCLE/board/hyw/configs/hyw
 ```
 
-### 烧录
+按你们现有 hyw 流程 configure + 编译 + 烧录。  
+串口 nsh 后：
 
-```bash
-# 编译产物位于 \openvela\cmake_out\lckfb_huangshan_pi_nsh\ 目录，通过 SF32LB52 烧录工具写入开发板
-# 具体烧录方式参考 LCKFB 黄山派官方文档
+```sh
+# 时间守护（需 defconfig 打开对应 LVX_USE_DEMO 开关并编入）
+# 请求文件：/data/tmp/settime.req  内容为 unix 秒或 "YYYY-MM-DD HH:MM:SS"
+# 应答：    /data/tmp/settime.ack
+
+# 蓝牙 PAN 相关原生程序（以 btpand 用法为准）
 ```
 
-### 运行
+### 快应用
 
 ```bash
-# 烧录完成后开发板自动启动，通过 USB 转 UART 连接串口：
-# 波特率 1000000，nsh 终端可用
-
-# 启动后系统自动进入 MaruHome Launcher（锁屏 → 桌面）
-# 桌面磁贴可点击进入设置、音乐等页面
-
-# 手动触发音频播放器（Native 守护进程）：
-nsh> audio_player &
-
-# 竹知了应用：从桌面点击进入，摇晃开发板触发蝉鸣
-# 这个修炸了用不了
+cd quickapp/maruhome
+npm install
+npm run build
+# 产物 dist/com.circle.home.debug.1.0.0.rpk
 ```
 
-### 自定义 Skill（vela_config_lookup）
+安装到设备后：锁屏上滑 → 桌面 → 各功能页左缘侧滑返回。
 
-```bash
-# Skill 位于 .claude/skills/vela_config_lookup/
-# 在 MiMoCode 中使用：
-# "用 vela_config_lookup 查一下 CONFIG_FEATURE_SYSTEM_ 相关的配置"
+---
 
-# 或手动测试：
-cd .claude/skills/vela_config_lookup
-bash test_skill.sh
-```
+## 五、上游贡献（PR）
 
-## 五、AI Coding 使用说明
+本项目向 openvela 相关仓库提交的定制修改：
 
-### 工具链
+| 仓库 | PR | 内容摘要 |
+|------|-----|----------|
+| [open-vela/frameworks_bluetooth](https://github.com/open-vela/frameworks_bluetooth/pull/595) | [#595](https://github.com/open-vela/frameworks_bluetooth/pull/595) | **PANU / BNEP 网络数据面**：`sal_pan_interface.c` 实现 BNEP RX（压缩帧 0x02/0x04 与完整以太网帧），修复 COMPRESSED_SOURCE 分发，补充诊断日志 |
+| [open-vela/vendor_sifli](https://github.com/open-vela/vendor_sifli/pull/39) | [#39](https://github.com/open-vela/vendor_sifli/pull/39) | **SF32LB52 蓝牙适配**：`sf32lb52_bt_adapter.c` 对接 Zblue、HCI 路由与 Sniff 功耗钩子；`sf32lb52_bth4.c` H4 UART ACL 解析；堆分配相关调整 |
+| [open-vela/external_zblue](https://github.com/open-vela/external_zblue/pull/235) | [#235](https://github.com/open-vela/external_zblue/pull/235) | **Zblue PAN/BNEP 适配**：`l2cap_br.c` 修复 BNEP（PSM 0x000F）连接与 MTU；`hci_core.c` 修复 HCI 与 Sniff/功耗交互，避免 PAN 通路被打断 |
 
-| 工具 | 用途 | 使用规模 |
-|---|---|---|
-| MiMoCode（MiMo-v2.5-pro） | 主力开发工具，代码生成、调试、重构 | 113 session，2,689 事件 |
-| OpenCode | 早期技术探索 | 4 session，1,585 事件 |
-| velajs-mcp | VelaJS 快应用调试 | 27 个工具，3 分钟配置 |
+对应 PPT 中「蓝牙链接 / PAN」等技术工作。
 
-### AI 协作流程
+---
 
-1. **需求拆解**：将"在 SF32LB52 上跑 openvela 系统级 UI"拆分为驱动适配、框架选型、应用开发、IPC 设计等子任务，逐个与 AI 对话推进
-2. **方案设计**：LVGL → VelaJS 快应用的技术栈切换决策由 AI 分析 GPU 驱动现状后提出建议
-3. **编码实现**：快应用页面（730 行）、音频播放器（298 行）、音频驱动（521 行）均由 AI 辅助生成，人工审查修正
-4. **调试排错**：蓝牙 PAN 依赖链分析、cmake 构建冲突排查、defconfig 配置等均通过 AI 对话完成
-5. **工具建设**：vela_config_lookup Skill 由 AI 辅助开发（295 行核心引擎），解决了 AI 自身不了解 Kconfig 依赖链的问题
+## 六、已知限制（诚实清单）
 
-### 实际帮助
+| 项 | 状态 |
+|----|------|
+| 快应用跨应用启动（jumpApp） | 固件未提供 feature，桌面仅页内路由 |
+| 近场名片完整 BLE 交换 | 协议栈侧有 PAN/BNEP PR；快应用 `system.bluetooth.ble` 视固件而定，UI 可先占位 |
+| 本地音乐播放 | 依赖 media server + FFmpeg 配置，未配齐前播放不可用 |
+| 设置页时间 | 通过 `timesetd` + `/data/tmp/settime.req` 文件 IPC，需固件编入守护进程 |
+| 加速度 → 快应用 | uORB 可读；`system.sensor` 订阅在部分固件上仍可能失败 |
+| 输入法 | 第三方输入法组件因体积/内存未采用，名片字段为只读展示 |
 
-- 30 天单人完成驱动层到应用层全栈交付，AI 承担了约 1,629 行自有代码的大部分生成工作
-- vela_config_lookup Skill 避免了盲目修改 defconfig 导致的反复编译失败
-- 蓝牙 PAN 多 PR 协同合入的依赖分析（#121、#41、vendor_sifli #31）由 AI 辅助完成
+---
 
-完整对话日志见 `logs/arikasu1027/` 目录（122 个 session，由 AI Coding 插件自动生成，未手动删改）。
+## 七、硬件杂谈（答辩轶事，摘自 PPT）
 
+- 扬声器：K80 至尊版大师级同轴  
+- 电池：Xiaomi Watch S4 Sport 高密度电芯  
+- 震动马达：小米 14 Pro  
+- 曾构思索尼激光投影光机 + HUD 夜间路面投影，因硬件受阻放弃  
+
+---
+
+## License
+
+以各子仓库及 openvela 上游 License 为准；本仓代码遵循仓库内声明。

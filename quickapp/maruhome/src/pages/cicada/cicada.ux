@@ -1,0 +1,189 @@
+<template>
+  <div class="page"
+    ontouchstart="onTouchStart"
+    ontouchmove="onTouchMove"
+    ontouchend="onTouchEnd">
+    <div class="swipe-indicator" style="opacity: {{swipeProgress}};">
+      <text class="swipe-arrow">&#x2039;</text>
+    </div>
+
+    <div class="header">
+      <text class="header-title">竹知了</text>
+    </div>
+
+    <div class="stage">
+      <text class="big-state">{{isPlaying ? '鸣叫中…' : '摇一摇试试'}}</text>
+      <text class="mag">加速度模长 {{magnitude}}</text>
+      <text class="mag">阈值 {{threshold}}</text>
+      <text class="mag" if="{{ax !== 0 || ay !== 0 || az !== 0}}">x{{ax}} y{{ay}} z{{az}}</text>
+    </div>
+
+    <div class="footer">
+      <text class="hint">超过阈值播放蝉鸣 · 3 秒冷却</text>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import sensor from '@system.sensor'
+import audio from '@system.audio'
+
+const COOLDOWN_MS = 3000
+const PLAY_MS = 2000
+
+export default {
+  private: {
+    ax: 0,
+    ay: 0,
+    az: 0,
+    magnitude: 0,
+    threshold: 12,
+    isPlaying: false,
+    lastPlayTime: 0,
+    touchStartX: 0,
+    swipeProgress: 0,
+    resetTimer: null
+  },
+
+  onInit() {
+    try {
+      audio.src = '/common/audio/cicada.wav'
+      audio.volume = 0.9
+    } catch (e) {
+      console.error('[Cicada] audio init: ' + e)
+    }
+    this.startSensor()
+  },
+
+  onDestroy() {
+    this.stopSensor()
+    if (this.resetTimer) {
+      clearTimeout(this.resetTimer)
+      this.resetTimer = null
+    }
+    try { audio.stop() } catch (e) {}
+  },
+
+  startSensor() {
+    var self = this
+    try {
+      sensor.subscribeAccelerometer({
+        interval: 'normal',
+        callback: function (data) {
+          self.ax = Math.round(data.x)
+          self.ay = Math.round(data.y)
+          self.az = Math.round(data.z)
+          self.magnitude = Math.round(
+            Math.sqrt(data.x * data.x + data.y * data.y + data.z * data.z)
+          )
+          if (self.magnitude > self.threshold && !self.isPlaying) {
+            var now = Date.now()
+            if (now - self.lastPlayTime > COOLDOWN_MS) {
+              self.lastPlayTime = now
+              self.isPlaying = true
+              try { audio.play() } catch (e) {
+                console.error('[Cicada] play: ' + e)
+              }
+              self.resetTimer = setTimeout(function () {
+                self.isPlaying = false
+                self.resetTimer = null
+                try { audio.stop() } catch (e) {}
+              }, PLAY_MS)
+            }
+          }
+        },
+        fail: function (data, code) {
+          console.error('[Cicada] sensor fail ' + code)
+        }
+      })
+    } catch (e) {
+      console.error('[Cicada] subscribe: ' + e)
+    }
+  },
+
+  stopSensor() {
+    try { sensor.unsubscribeAccelerometer() } catch (e) {
+      console.error('[Cicada] unsubscribe: ' + e)
+    }
+  },
+
+  onTouchStart(e) {
+    this.touchStartX = e.touches[0].clientX
+    this.swipeProgress = 0
+  },
+
+  onTouchMove(e) {
+    var diff = e.touches[0].clientX - this.touchStartX
+    if (diff > 0 && this.touchStartX < 30) {
+      this.swipeProgress = Math.min(diff / 80, 1)
+    }
+  },
+
+  onTouchEnd(e) {
+    var diff = e.changedTouches[0].clientX - this.touchStartX
+    if (diff > 80 && this.touchStartX < 30) {
+      try { router.back() } catch (err) { console.error('[Cicada] back: ' + err) }
+    } else {
+      this.swipeProgress = 0
+    }
+  }
+}
+</script>
+
+<style>
+.page {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  flex-direction: column;
+  padding: 36px 24px;
+}
+.swipe-indicator {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  width: 28px;
+  height: 56px;
+  background-color: rgba(255, 255, 255, 0.12);
+  border-radius: 0 12px 12px 0;
+  justify-content: center;
+  align-items: center;
+}
+.swipe-arrow {
+  font-size: 26px;
+  color: #FFFFFF;
+}
+.header {
+  margin-bottom: 24px;
+}
+.header-title {
+  font-size: 24px;
+  color: #F2F2F2;
+  font-weight: bold;
+}
+.stage {
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.big-state {
+  font-size: 28px;
+  color: #277AF7;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+.mag {
+  font-size: 14px;
+  color: #787E96;
+  margin-top: 6px;
+}
+.footer {
+  align-items: center;
+}
+.hint {
+  font-size: 12px;
+  color: #737373;
+}
+</style>
